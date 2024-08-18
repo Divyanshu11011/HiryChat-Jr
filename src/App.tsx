@@ -1,13 +1,38 @@
 // src/App.tsx
 import React, { useState } from 'react';
+import SignIn from './components/Signin/SignIn';
+import ProfileSetup from './components/Signin/Profilesetup';
 import Sidebar from './components/Sidebar/Sidebar';
 import ChatHeader from './components/ChatArea/ChatHeader';
 import ChatMessages from './components/ChatArea/ChatMessages';
 import MessageInput from './components/ChatArea/MessageInput';
 
 const App: React.FC = () => {
+  const [user, setUser] = useState<any>(null);
+  const [profileComplete, setProfileComplete] = useState(false);
   const [activeTab, setActiveTab] = useState<string>('All');
   const [activeChat, setActiveChat] = useState<string | null>(null);
+
+  const handleSignInSuccess = (user: any) => {
+    setUser(user);
+    if (!user.profileComplete) {
+      setProfileComplete(false);
+    } else {
+      setProfileComplete(true);
+    }
+  };
+
+  const handleProfileComplete = () => {
+    setProfileComplete(true);
+  };
+
+  if (!user) {
+    return <SignIn onSignInSuccess={handleSignInSuccess} />;
+  }
+
+  if (!profileComplete) {
+    return <ProfileSetup onProfileComplete={handleProfileComplete} />;
+  }
 
   return (
     <div className="flex flex-col md:flex-row h-screen">
