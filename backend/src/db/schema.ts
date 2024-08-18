@@ -1,7 +1,7 @@
-import { integer, pgTable, serial, text, timestamp, boolean, varchar } from 'drizzle-orm/pg-core';
+const { integer, pgTable, serial, text, timestamp, boolean, varchar } = require('drizzle-orm/pg-core');
 
 // Users Table
-export const usersTable = pgTable('users_table', {
+const usersTable = pgTable('users_table', {
   id: serial('id').primaryKey(),
   name: text('name').notNull(),
   email: text('email').notNull().unique(),
@@ -15,7 +15,7 @@ export const usersTable = pgTable('users_table', {
 });
 
 // Conversations Table (for multi-user or private chats)
-export const conversationsTable = pgTable('conversations_table', {
+const conversationsTable = pgTable('conversations_table', {
   id: serial('id').primaryKey(),
   title: text('title').default(''),                      // Optional for group chats
   createdAt: timestamp('created_at').notNull().defaultNow(),
@@ -25,7 +25,7 @@ export const conversationsTable = pgTable('conversations_table', {
 });
 
 // Conversation Participants Table
-export const conversationParticipantsTable = pgTable('conversation_participants_table', {
+const conversationParticipantsTable = pgTable('conversation_participants_table', {
   id: serial('id').primaryKey(),
   userId: integer('user_id').references(() => usersTable.id, { onDelete: 'cascade' }).notNull(),
   conversationId: integer('conversation_id')
@@ -34,7 +34,7 @@ export const conversationParticipantsTable = pgTable('conversation_participants_
 });
 
 // Messages Table
-export const messagesTable = pgTable('messages_table', {
+const messagesTable = pgTable('messages_table', {
   id: serial('id').primaryKey(),
   conversationId: integer('conversation_id')
     .references(() => conversationsTable.id, { onDelete: 'cascade' })
@@ -49,7 +49,7 @@ export const messagesTable = pgTable('messages_table', {
 });
 
 // Media Table (for image/video upload)
-export const mediaTable = pgTable('media_table', {
+const mediaTable = pgTable('media_table', {
   id: serial('id').primaryKey(),
   messageId: integer('message_id')
     .references(() => messagesTable.id, { onDelete: 'cascade' })
@@ -60,7 +60,7 @@ export const mediaTable = pgTable('media_table', {
 });
 
 // Typing Status Table
-export const typingStatusTable = pgTable('typing_status_table', {
+const typingStatusTable = pgTable('typing_status_table', {
   id: serial('id').primaryKey(),
   conversationId: integer('conversation_id')
     .references(() => conversationsTable.id, { onDelete: 'cascade' })
@@ -70,17 +70,11 @@ export const typingStatusTable = pgTable('typing_status_table', {
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
 
-export type InsertUser = typeof usersTable.$inferInsert;
-export type SelectUser = typeof usersTable.$inferSelect;
-
-export type InsertConversation = typeof conversationsTable.$inferInsert;
-export type SelectConversation = typeof conversationsTable.$inferSelect;
-
-export type InsertMessage = typeof messagesTable.$inferInsert;
-export type SelectMessage = typeof messagesTable.$inferSelect;
-
-export type InsertMedia = typeof mediaTable.$inferInsert;
-export type SelectMedia = typeof mediaTable.$inferSelect;
-
-export type InsertTypingStatus = typeof typingStatusTable.$inferInsert;
-export type SelectTypingStatus = typeof typingStatusTable.$inferSelect;
+module.exports = {
+  usersTable,
+  conversationsTable,
+  conversationParticipantsTable,
+  messagesTable,
+  mediaTable,
+  typingStatusTable
+};

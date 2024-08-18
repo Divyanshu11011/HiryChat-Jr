@@ -3,24 +3,27 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "generate": "drizzle-kit generate:pg"
+    "build": "tsc",                
+    "start": "node dist/index.js",  
+    "generate": "drizzle-kit generate:pg",  
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
+  "devDependencies": {
+    "@types/node": "^22.4.0",
+    "drizzle-kit": "^0.24.0"
+  },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.33.0",
     "express": "^4.19.2",
+    "express-fileupload": "^1.5.1",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.12.0",
     "postgres": "^3.4.4"
-  },
-  "devDependencies": {
-    "drizzle-kit": "^0.24.0"
   }
 }
